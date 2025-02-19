@@ -2,15 +2,9 @@ const express = require('express');
 const chrono = require('chrono-node');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+
 const app = express();
-
-// Middleware
 app.use(bodyParser.json());
-
-// Basic route to test
-app.get('/', (req, res) => {
-  res.send('Welcome to the Time Parser API! Use /api/parse-time to parse times.');
-});
 
 const WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/dCJtUsUCwtScv4BfRCHf/webhook-trigger/cdf560a1-037d-4c19-8d0d-386928f7e512';
 
@@ -20,7 +14,7 @@ function formatLocalISO(date) {
          `${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
-app.post('/api/parse-time', async (req, res) => {
+app.post('/parse-time', async (req, res) => {
   const { time_string, email } = req.body;
   if (!time_string?.trim()) return res.status(400).json({ error: 'Missing time_string' });
   if (!email?.trim()) return res.status(400).json({ error: 'Missing email' });
@@ -51,7 +45,6 @@ app.post('/api/parse-time', async (req, res) => {
   }
 });
 
-// Vercel Serverless Handler
-module.exports = (req, res) => {
-  app(req, res);  // Forward the request to the Express app
-};
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
