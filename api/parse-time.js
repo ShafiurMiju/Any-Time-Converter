@@ -3,6 +3,7 @@ const chrono = require('chrono-node');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 
+// Initialize Express app
 const app = express();
 app.use(bodyParser.json());
 
@@ -14,7 +15,7 @@ function formatLocalISO(date) {
          `${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
-app.post('/parse-time', async (req, res) => {
+app.post('/api/parse-time', async (req, res) => {
   const { time_string, email } = req.body;
   if (!time_string?.trim()) return res.status(400).json({ error: 'Missing time_string' });
   if (!email?.trim()) return res.status(400).json({ error: 'Missing email' });
